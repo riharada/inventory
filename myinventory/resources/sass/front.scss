@@ -1,0 +1,27 @@
+body {
+  color: #000;
+}
+
+.header {
+  .logo {
+      width: 120px;
+      height: 82px;
+  }
+}
+
+.posts {
+  .post {
+    .title {
+      font-size: 1.2em;
+    }
+    .number {
+      font-size: 1.0em;
+    }
+    .date {
+      font-size: 1.0em;
+    }
+    .diff {
+      font-size: 1.0em;
+    }
+  }
+}
