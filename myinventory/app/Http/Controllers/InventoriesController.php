@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\HTML;
 use App\Inventory;
 use Carbon\Carbon;
 
-class InventoryController extends Controller
+class InventoriesController extends Controller
 {
   public function index(Request $request)
   {

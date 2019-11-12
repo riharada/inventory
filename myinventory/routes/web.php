@@ -17,17 +17,17 @@ Route::get('/', function () {
 
 
 Route::group(['prefix' =>'admin', 'middleware'=>'auth'], function() {
-  Route::get('inventory/create','Admin\InventoryController@add');
-  Route::post('inventory/create', 'Admin\InventoryController@create');
-  Route::get('inventory', 'Admin\InventoryController@index');
-  Route::get('inventory/edit', 'Admin\InventoryController@edit');
-  Route::post('inventory/edit', 'Admin\InventoryController@update');
-  Route::get('inventory/delete', 'Admin\InventoryController@delete');
+  Route::get('inventory/create','Admin\InventoriesController@add');
+  Route::post('inventory/create', 'Admin\InventoriesController@create');
+  Route::get('inventory', 'Admin\InventoriesController@index');
+  Route::get('inventory/edit', 'Admin\InventoriesController@edit');
+  Route::post('inventory/edit', 'Admin\InventoriesController@update');
+  Route::get('inventory/delete', 'Admin\InventoriesController@delete');
   });
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/', 'InventoryController@index');
+Route::get('/', 'InventoriesController@index');
 
 
 Auth::routes();

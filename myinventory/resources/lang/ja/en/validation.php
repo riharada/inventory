@@ -147,8 +147,7 @@ return [
 
     'attributes' => [
         'title' => '商品名',
-        'number' => '個数',
-        'duration' => '消費期間'
+        
      ],
        
 ];
