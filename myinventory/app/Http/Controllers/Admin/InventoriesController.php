@@ -55,65 +55,81 @@ class InventoriesController extends Controller
   {
     $cond_title = $request->cond_title;
    if ($cond_title !=''){
-     $item = Item::where('name', $cond_title);
-     //検索されたら検索結果を取得する
-     $inventories = Inventory::select()->join('items','inventories.item_id','=','items.id')->where('items.name','=',$cond_title)->orderBy('date','desc')->get()->unique('item_id');
+     $items = Item::where('name', $cond_title)->get();
    } else {
      //それ以外はすべての在庫名を取得する
-     $inventories = Inventory::orderBy('date','desc')->get()->unique('item_id');
+     $items = Item::all();
    }
    
    //各商品の消費期間の平均を算出する
-    $items =Item::all();
+   $now = Carbon::now();
+   //2次元（多次元）の連想配列の$array(keyがitem_id、valueが消費日数、あと～日)
+   //item->inventories->count で回数
+   $array_inventories = array();
    
+   foreach($items as $item) {
+     $total_days = $item->inventories->min('date')->diffInDays($item->inventories->max('date'));
+     $count_days = $item->inventories->count('date');
+     if($count_days-1 == 0) {
+       $avr_days = 0;
+      } else {
+        $avr_days = floor($total_days / ($count_days-1));
+      }
+     
+     $next_days = $item->inventories->max('date')->addDays($avr_days);
+     $rem_days = $now->diffInDays($next_days);
+     $array = array('avr'=>$avr_days, 'rem'=>$rem_days);
+     $array_inventories[] = array('item'=>$item, 'next'=>$next_days, 'avr'=>$avr_days, 'rem'=>$rem_days);
+   }
    
+   //ページネーション
    
-    $now = Carbon::now();
-   
-    
-   
-   
-    //ページネーション
-    $pages = Inventory::paginate(3);
-    
-    return view('admin.inventory.index', ['inventories' => $inventories, 'cond_title' => $cond_title, 'now'=>$now, 'items' =>$items, 'pages'=>$pages]);
+ 
+    return view('admin.inventory.index', ['cond_title'=>$cond_title,'array_inventories'=>$array_inventories]);
   }
   
   public function edit (Request $request)
   {
-    //Inventory Modelからデータを取得する
-    $inventory = Inventory::find($request->id);
-    if (empty($inventory)) {
+    //Item Modelからデータを取得する
+    $item = Item::find($request->id);
+    if (empty($item)) {
       abort(404);
     }
+   
+       return view('admin.inventory.edit', ['item'=>$item]);
+  }  
     
-    $inventories = Inventory::orderBy('date','desc')->get();
-    
-    return view('admin.inventory.edit', ['inventory'=>$inventory, 'inventories'=>$inventories]);
-  }
-  
-  public function update(Request $request)
+  public function update (Request $request)
   {
-    //validationをかける
+    //validationを行う
     $this->validate($request, Inventory::$rules);
-    //Inventory Modelからデータを取得
-    $inventory = Inventory::find($request->item_id);
-    //送信されてきたフォームデータを格納
-    $inventory_form = $request->all();
     
-    unset($inventory_form['_token']);
-    $inventory->fill($inventory_form)->save();
+    $inventory = new Inventory;
     
-    
+    $item_id = $request->item_id;
+    $date = $request->date;
+    if($date != 0) {
+      $inventory->item_id = $item_id;
+      $inventory->date = $date;
+      $inventory->save();
+    } else {
+      abort(404);
+    }
+  
     return redirect('admin/inventory');
   }
   
   public function delete(Request $request)
   {
-    //該当するInventory Modelを取得
     $inventory = Inventory::find($request->id);
-    
+    $item_id = $inventory->item_id;
     $inventory->delete();
+    $item = Item::find($item_id);
+    
+    //Inventoryのid（購入履歴）を削除する場合の処理 →Inventoryのidが全てなくなったら、紐づくItemのidを削除する
+    if($item->inventories == NULL)
+      $item->delete();
+    
     return redirect('admin/inventory');
   }
   

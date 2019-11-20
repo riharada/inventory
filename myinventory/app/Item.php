@@ -11,10 +11,10 @@ class Item extends Model
 
   public static $rules = array(
     'name' => 'required',
- );
-  public function inventory()
-    {
-      return $this->hasOne('App\Inventory');
-    }
+  );
+  public function inventories()
+  {
+    return $this->hasMany('App\Inventory');
+  }
   
 }

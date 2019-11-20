@@ -23,13 +23,9 @@ Route::group(['prefix' =>'admin', 'middleware'=>'auth'], function() {
   Route::get('inventory/edit', 'Admin\InventoriesController@edit');
   Route::post('inventory/edit', 'Admin\InventoriesController@update');
   Route::get('inventory/delete', 'Admin\InventoriesController@delete');
+  Route::get('item/delete', 'Admin\ItemsController@delete');
   });
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/', 'InventoriesController@index');
-
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'Admin\InventoriesController@index');

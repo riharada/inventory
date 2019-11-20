@@ -28,7 +28,7 @@
   <body>
     <div id="app">
       {{-- 画面上部に表示するナビゲーションバー --}}
-      <nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
+      <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
         <div class="container">
           <a class="navbar-brand" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
@@ -47,7 +47,6 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
               
-            {{-- 以下追記 --}}
             <!-- Authentication Links -->
             {{-- ログインしていなかったらログイン画面へのリンクを表示 --}}
             @guest
@@ -69,7 +68,6 @@
                   </div>
                 </li>
                @endguest
-               {{-- 以上追記 --}}
             </ul>
           </div>
         </div>

@@ -146,7 +146,7 @@ return [
     */
 
     'attributes' => [
-        'title' => '商品名',
+        'name' => '商品名',
         
      ],
        

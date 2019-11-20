@@ -29,15 +29,9 @@
         @foreach ($items as $item)
         <option value="{{ $item->id }}">{{ $item->name }}</option>
         @endforeach
+       </select>
        
-       @php
-       echo "<br />";
-       //これ入れても改行されない？
-       @endphp
-       
-       
-      </select>
-      <div class="col-md-10">
+      <div class="col-md-6">
       <h5>上記選択内になければ、以下に入力をお願いします↓</h5>
         <input type="text" class="form-control" name="input_item">
        </div>
@@ -45,13 +39,14 @@
      
      <div class="form-group row">
         <label class="col-md-2" for="date">購入日</label>
-        <div class="col-md-10">
+        <div class="col-md-8">
             <input type="date" class="form-control" name="date">
         </div>
     　</div>
-      
       {{ csrf_field() }}
-      <input type="submit" class="btn btn-primary" value="更新">
+      <div class="col-md-4 offset-md-4">
+      　<input type="submit" class="btn btn-primary" value="更新">
+      </div>
       
       </form>
      </div>

@@ -7,19 +7,19 @@ body {
   height: 82px;
 }
 
-.posts .post .title {
+.inventories .inventory .title {
   font-size: 1.2em;
 }
 
-.posts .post .number {
+.inventories .inventory .number {
   font-size: 1em;
 }
 
-.posts .post .date {
+.inventories .inventory .date {
   font-size: 1em;
 }
 
-.posts .post .diff {
+.inventories .inventory .diff {
   font-size: 1em;
 }
 
